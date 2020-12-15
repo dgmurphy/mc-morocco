@@ -28,10 +28,16 @@ Once loaded into the Babylon scene,  the scaling needed to be fixed due to the B
 handed coordinate system. The normals had to be flipped also.  All the other objects
 are BJS primitives from the provided polyhedra examples.
 
-TODO: Figure out whats going wrong in Edge. Also try some scene optimization and maybe look at using
-deterministicLockstep for framerate consistency.
 
-
+## TODO
+* Spread spawn location
+* Redo levels
+* Audio for activator expiration
+* Help screen
+* Trailer
+* Merge changes for other boards
+* Redo insta images
+* Clean up README
 
 ## Available Scripts
 

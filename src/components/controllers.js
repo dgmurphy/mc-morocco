@@ -5,12 +5,15 @@ import { FRAMETHRESH_GUI, FIELD_EXTENTS, phases, edge,
         AGENT_MAX_SPEED, AGENT_MAX_HEALTH, AGENT_MIN_SPEED,
         TERRAIN_MESH_NAME, WATER_TRAIL_COLOR1,
         WATER_TRAIL_COLOR2, WATER_TRAIL_COLOR_DEAD,
-        AGENT_TRAIL_COLOR1, AGENT_TRAIL_COLOR2, AGENT_TRAIL_COLOR_DEAD} from './constants.js'
+        AGENT_TRAIL_COLOR1, AGENT_TRAIL_COLOR2, 
+        AGENT_TRAIL_COLOR_DEAD, MORTAR_BOOST_LIFE} from './constants.js'
 import { randomSteerMotivator, seekZoneMotivator, locateArtifactMotivator,
          moveToTargetMotivator, avoidEdgeMotivator } from './steering-motivators.js'
 import { setModeInputs } from './mode-utils.js'
 import { updateRounds, updateThePackage } from './mortars.js'
 import { setArtifactDetected } from './agent.js';
+import { updateMines } from './mines.js';
+import { activator_aging, activatorChance, disableMortarBoost } from './activators.js'
 
 
 
@@ -33,6 +36,7 @@ export function startAgentAnim(scene, handleUpdateGUIinfo) {
 
         updateRounds(scene)
         updateThePackage(scene)
+        updateMines(scene)
 
         // TODO only check if there are any agents in the artifact zone
         detectArtifacts(scene)
@@ -43,6 +47,15 @@ export function startAgentAnim(scene, handleUpdateGUIinfo) {
             station.shell.rotate(BABYLON.Axis.Y, spinSpeed, BABYLON.Space.LOCAL)
         }
 
+        // animator activators
+        for (var activator of scene.activators) {
+            let spinSpeed = .02
+            activator.rotator.rotate(BABYLON.Axis.Y, spinSpeed, BABYLON.Space.LOCAL)
+
+            activator_aging(activator, scene)
+        }
+
+
         // Check for mode change on interval (higher interval => better perf)
         var agent
         if (modeCheckCounter === modeCheckThresh) {
@@ -50,6 +63,13 @@ export function startAgentAnim(scene, handleUpdateGUIinfo) {
             setModeInputs(scene, handleUpdateGUIinfo)
             for (agent of scene.agents)
                 steeringPoll(agent)
+
+            // do activatorCheck
+            activatorChance(scene)
+
+            // check if mortar boost is expired
+            if ((scene.gameFrame - scene.mortarBoostFrame) > MORTAR_BOOST_LIFE)
+                disableMortarBoost(scene)
 
             modeCheckCounter = 0
         }
@@ -72,7 +92,7 @@ export function startAgentAnim(scene, handleUpdateGUIinfo) {
     
         frameCounter += 1
         modeCheckCounter += 1
-        scene.addAgentCounter += 1
+        //scene.addAgentCounter += 1
        
     })
     // ************** Game/Render loop done ***********************************

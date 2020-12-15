@@ -5,7 +5,9 @@ import { addPowerStations, addPowerStation, placePowerStations,
             removeStationWreckage } from './station.js'
 import { GAME_PHASES, GAME_LEVELS, ARTIFACT_TYPES,
          TERRAIN_MESH_NAME, LEVELS_MODE} from './constants.js'
+import { deployMines, placeMines, clearMines } from './mines.js'
 import { randn_bm } from './utils'
+import { addActivator, clearActivators } from './activators.js'
 
 
 export function handleLevelComplete(scene) {
@@ -31,8 +33,11 @@ export function handleLevelComplete(scene) {
 
 export function handleGameOver(scene, handleUpdateGUIinfo) {
 
+    clearMines(scene)
+    clearActivators(scene)
     scene.gameScores.push(scene.gameScore)
     scene.hiGameScore = Math.max.apply(Math, scene.gameScores)
+
 
     handleUpdateGUIinfo()   
 
@@ -119,6 +124,8 @@ export function addLevelControl(scene) {
            for the raycasting to work properly. Update station
            locations here for this reason */
         placePowerStations(scene)
+        placeMines(scene)
+        
 
         scene.gameStarted = true
     }
@@ -134,7 +141,7 @@ export function addLevelControl(scene) {
         destroyAgent(agentInfo, scene)
     }
     scene.agents = []
-    scene.addAgentCounter = 0
+    //scene.addAgentCounter = 0
     scene.agentsDestroyed = 0
 
     // destroy artifacts
@@ -354,13 +361,18 @@ function handleDebug(e) {
         console.log("DEBUG: " + e.which)
     }
 
-    if ( (e.which === 84) && (e.altKey) ) {
+    else if ( (e.which === 84) && (e.altKey) ) {
         hideTerrain(e)
         console.log("DEBUG: " + e.which)
     }
 
+    else if ( (e.which === 73) && (e.altKey) ) {
+        replaceMines(e)
+        console.log("DEBUG: " + e.which)
+    }
+
     // TEMP
-    if (e.which === 81) {
+    else if (e.which === 81) {
         var c = e.currentTarget.document.getElementsByTagName('canvas')[0]
         var scene = c.bjsScene
         let lake = BABYLON.MeshBuilder.CreateSphere("LAKE", scene)
@@ -370,10 +382,51 @@ function handleDebug(e) {
         lake.scaling = new BABYLON.Vector3(5,5,5)
     }
 
-   
+    else if ( (e.which === 65) && (e.altKey) ) {
+        deployMineActivator(e)
+        console.log("DEBUG: " + e.which)
+    }
+
+    else if ( (e.which === 72) && (e.altKey) ) {
+        deployHealthActivator(e)
+        console.log("DEBUG: " + e.which)
+    }
+
+    else if ( (e.which === 66) && (e.altKey) ) {
+        deployBoltActivator(e)
+        console.log("DEBUG: " + e.which)
+    }
 
 }
 
+function deployHealthActivator(e) {
+    var c = e.currentTarget.document.getElementsByTagName('canvas')[0]
+    var scene = c.bjsScene
+    addActivator(scene, "health")
+}
+
+
+function deployMineActivator(e) {
+    var c = e.currentTarget.document.getElementsByTagName('canvas')[0]
+    var scene = c.bjsScene
+    addActivator(scene, "mine")
+}
+
+
+function deployBoltActivator(e) {
+    var c = e.currentTarget.document.getElementsByTagName('canvas')[0]
+    var scene = c.bjsScene
+    addActivator(scene, "bolt")
+}
+
+function replaceMines(e) {
+
+    var c = e.currentTarget.document.getElementsByTagName('canvas')[0]
+    var scene = c.bjsScene
+    deployMines(scene)
+
+   
+}
 
 function hideTerrain(e) {
 
