@@ -3,8 +3,8 @@ import * as BABYLON from '@babylonjs/core'
 import { destroyAgent, addAgent, addArtifact } from './agent.js'
 import { addPowerStations, addPowerStation, placePowerStations, 
             removeStationWreckage } from './station.js'
-import { GAME_PHASES, GAME_LEVELS, ARTIFACT_TYPES,
-         TERRAIN_MESH_NAME, LEVELS_MODE} from './constants.js'
+import { GAME_PHASES, GAME_LEVELS, ARTIFACT_TYPES } from './constants.js'
+import { TERRAIN_MESH_NAME, LEVELS_MODE } from './per-table-constants.js'
 import { deployMines, placeMines, clearMines } from './mines.js'
 import { randn_bm } from './utils'
 import { addActivator, clearActivators } from './activators.js'
@@ -377,17 +377,6 @@ function handleDebug(e) {
         replaceMines(e)
         console.log("DEBUG: " + e.which)
     }
-
-    // // TEMP
-    // else if (e.which === 81) {
-    //     var c = e.currentTarget.document.getElementsByTagName('canvas')[0]
-    //     var scene = c.bjsScene
-    //     let lake = BABYLON.MeshBuilder.CreateSphere("LAKE", scene)
-    //     lake.position.x = -2
-    //     lake.position.y = 3.5
-    //     lake.position.z = 1.5
-    //     lake.scaling = new BABYLON.Vector3(5,5,5)
-    // }
 
     else if ( (e.which === 65) && (e.altKey) ) {
         deployMineActivator(e)

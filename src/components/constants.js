@@ -200,7 +200,6 @@ export const GUN_RANGE = 24.0
 export const GUN_VELOCITY = 1
 export const MORTAR_VELOCITY = 0.55
 export const PACKAGE_VELOCITY = 0.3
-export const MORTAR_YPEAK = 6.5
 export const GUN_POSITION = {
     x: 24,
     y: 7,
@@ -227,10 +226,7 @@ export const GAME_PHASES = {
 // points to load the heavy mortar
 export const PACKAGE_POINTS_THRESH = 12000
 
-export const TERRAIN_MESH_NAME = "Morocco"
 
-// export const LEVELS_MODE = "manual"
-export const LEVELS_MODE = "auto"
 
 export  const AGENT_TRAIL_COLOR1 =  [.5, .5, 0.3, 1.0]
 export  const AGENT_TRAIL_COLOR2 =  [.4, .4, 0.2, 1.0]
