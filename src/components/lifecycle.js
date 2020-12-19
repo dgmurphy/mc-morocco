@@ -246,7 +246,7 @@ function autoLevelData(scene) {
     let totalHealth = 0
     
     // sample number of agents 
-    let numbots = scene.gameLevel
+    let numbots = scene.gameLevel + 1
     numbots += Math.floor(Math.random() * 5)
 
     //let numbots = Math.ceil(Math.random() * max_bots)
