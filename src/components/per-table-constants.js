@@ -2,7 +2,7 @@ export const MORTAR_YPEAK = 6.5
 export const TERRAIN_MESH_NAME = "Morocco"
 export const LEVELS_MODE = "auto"
 export const GLTF_FILE = "morocco.gltf"
-export const TABLE_XFORM = {
+export const MC_TABLE_XFORM = {
     pos: [-0,1.5,.5],
     scale: [1.88, 2,-1.88]
 }
